@@ -396,6 +396,9 @@ foreach ($clientsite in $clientsites.data){
 foreach ($facility in $clientfacilities.data.attributes){
     $Name = $facility.name
     $equipment = $facility.traits.equipment.values
+    if ($facility.name -match 'ATL Server'){
+        $test = $facility.traits.equipment.values
+    }
     if ($equipment -eq $null){
         $equipment_output = "
             <tr>
@@ -408,7 +411,7 @@ foreach ($facility in $clientfacilities.data.attributes){
         $equipment_output = "
             <tr>
                 <td>Facility Attached Equipment - $Name</td>
-                <td class=good>$($equipment.name) </td>
+                <td class=good>$($equipment.name -join "  --||--  ") </td>
                 <td class=good>Correct!</td>
             </tr>
             "
@@ -427,7 +430,7 @@ Invoke-Item $qc_htmlfile
 #region Cleanup
 
 Stop-Transcript
-Get-Process | Where {$_.processname -match "cmd"} | Stop-Process
+#Get-Process | Where {$_.processname -match "cmd"} | Stop-Process
 
 #endregion
 
