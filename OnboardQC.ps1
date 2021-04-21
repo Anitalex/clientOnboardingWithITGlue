@@ -394,14 +394,29 @@ foreach ($clientsite in $clientsites.data){
 }
 
 foreach ($facility in $clientfacilities.data.attributes){
-    $site = $facility.traits.site.values.name
     $Name = $facility.name
     $equipment = $facility.traits.equipment.values
-    Write-Host "Facility: $Name"
-    Write-Host "Site: $site"
-    Write-Host "Equipment Name: $($equipment.name)"
-    Write-Host "Equipment Type: $($equipment.'configuration-type-name')"
-    Write-Host "---------------------"
+    if ($equipment -eq $null){
+        $equipment_output = "
+            <tr>
+                <td>Facility Attached Equipment - $Name</td>
+                <td class=bad>No equipment attached!</td>
+                <td class=bad>Please attach the configurations for the equipment in the facility</td>
+            </tr>
+            "
+        $equipment_output | Out-File -FilePath $qc_htmlfile -append
+    } else {
+        foreach ($item in $equipment){
+            $equipment_output = "
+            <tr>
+                <td>Facility Attached Equipment - $Name</td>
+                <td class=good>$($item.name)</td>
+                <td class=good>Correct!</td>
+            </tr>
+            "
+            $equipment_output | Out-File -FilePath $qc_htmlfile -append
+        }
+    }
 }
 
 
