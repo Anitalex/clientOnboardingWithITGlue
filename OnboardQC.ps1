@@ -404,19 +404,16 @@ foreach ($facility in $clientfacilities.data.attributes){
                 <td class=bad>Please attach the configurations for the equipment in the facility</td>
             </tr>
             "
-        $equipment_output | Out-File -FilePath $qc_htmlfile -append
     } else {
-        foreach ($item in $equipment){
-            $equipment_output = "
+        $equipment_output = "
             <tr>
                 <td>Facility Attached Equipment - $Name</td>
-                <td class=good>$($item.name)</td>
+                <td class=good>$($equipment.name) </td>
                 <td class=good>Correct!</td>
             </tr>
             "
-            $equipment_output | Out-File -FilePath $qc_htmlfile -append
-        }
     }
+    $equipment_output | Out-File -FilePath $qc_htmlfile -append
 }
 
 
